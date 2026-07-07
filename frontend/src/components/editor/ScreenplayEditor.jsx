@@ -1143,6 +1143,17 @@ export default function ScreenplayEditor({
           )
         })}
 
+        {/* Final Page Spacer to pad the last page to full height */}
+        {pageSize !== 'script' && (
+          <div
+            style={{
+              height: `${Math.max(0, heightLimit - 72 - (pageHeights[totalPages] || 72))}px`,
+              background: 'white',
+              pointerEvents: 'none'
+            }}
+          />
+        )}
+
         {!readOnly && hasAuthorPage && onlyHasTitlePage && pageSize !== 'script' && (
           <div 
             className="no-print"

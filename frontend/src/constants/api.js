@@ -1,4 +1,7 @@
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1'
+const rawBaseUrl = import.meta.env.VITE_API_BASE_URL || '/api/v1'
+export const API_BASE_URL = (rawBaseUrl.startsWith('http') && !rawBaseUrl.endsWith('/api/v1'))
+  ? `${rawBaseUrl.replace(/\/+$/, '')}/api/v1`
+  : rawBaseUrl
 
 export const STORAGE_KEYS = {
   ACCESS_TOKEN: 'sw_access_token',
