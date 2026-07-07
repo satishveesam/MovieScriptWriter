@@ -184,6 +184,10 @@ public final class ScreenplayPdfExporter {
     }
 
     public static byte[] export(String title, String contentJson, String pageSize, String fontFamily, String watermarkText) throws DocumentException {
+        return export(title, contentJson, pageSize, fontFamily, watermarkText, null);
+    }
+
+    public static byte[] export(String title, String contentJson, String pageSize, String fontFamily, String watermarkText, String pageBreaksStr) throws DocumentException {
         boolean isScript = "script".equalsIgnoreCase(pageSize);
         boolean isLetter = "letter".equalsIgnoreCase(pageSize);
 
@@ -377,11 +381,23 @@ public final class ScreenplayPdfExporter {
             }
         }
 
+        java.util.Set<Integer> pageBreaks = new java.util.HashSet<>();
+        if (pageBreaksStr != null && !pageBreaksStr.isBlank()) {
+            for (String s : pageBreaksStr.split(",")) {
+                try {
+                    pageBreaks.add(Integer.parseInt(s.trim()));
+                } catch (NumberFormatException e) {
+                    // Ignore
+                }
+            }
+        }
+
         // ── Script body ──────────────────────────────────────────────────────────
         int sceneCounter = 0;
         boolean firstContentElement = true;
 
-        for (Map<String, Object> element : elements) {
+        for (int elementIndex = 0; elementIndex < elements.size(); elementIndex++) {
+            Map<String, Object> element = elements.get(elementIndex);
             String type = String.valueOf(element.get("type"));
 
             // Skip title page elements — already rendered above
@@ -400,9 +416,10 @@ public final class ScreenplayPdfExporter {
             }
 
             // ── Page break handling ──────────────────────────────────────────────
-            // If the element carries pageBreakBefore=true AND we're in a paginated format,
-            // insert a hard page break (exactly as the user sees in the editor).
-            if (!isScript && !firstContentElement && hasPageBreakBefore(element)) {
+            // If the element carries pageBreakBefore=true OR its index matches a browser page break,
+            // insert a hard page break.
+            boolean isHardPageBreak = hasPageBreakBefore(element) || pageBreaks.contains(elementIndex);
+            if (!isScript && !firstContentElement && isHardPageBreak) {
                 document.newPage();
             }
             firstContentElement = false;

@@ -163,6 +163,12 @@ public class ScriptServiceImpl implements ScriptService {
     @Override
     @Transactional(readOnly = true)
     public byte[] exportPdf(Long userId, Long scriptId, String pageSize, String watermark) {
+        return exportPdf(userId, scriptId, pageSize, watermark, null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public byte[] exportPdf(Long userId, Long scriptId, String pageSize, String watermark, String pageBreaks) {
         // Query database for script entity
         Script script = scriptRepository.findById(scriptId)
                 .orElseThrow(() -> new ResourceNotFoundException("Script not found"));
@@ -176,7 +182,7 @@ public class ScriptServiceImpl implements ScriptService {
             }
         }
         try {
-            return ScreenplayPdfExporter.export(script.getTitle(), script.getContent(), pageSize, script.getFontFamily(), watermark);
+            return ScreenplayPdfExporter.export(script.getTitle(), script.getContent(), pageSize, script.getFontFamily(), watermark, pageBreaks);
         } catch (Exception e) {
             throw new RuntimeException("PDF export failed", e);
         }

@@ -29,8 +29,8 @@ export const scriptApi = {
     return api.post(`/scripts/${scriptId}/switch-version`, { versionNumber })
   },
 
-  exportPdf(scriptId, pageSize = 'a4', watermark = '') {
-    return api.get(`/scripts/${scriptId}/export/pdf`, { params: { pageSize, watermark }, responseType: 'blob' })
+  exportPdf(scriptId, pageSize = 'a4', watermark = '', pageBreaks = '') {
+    return api.get(`/scripts/${scriptId}/export/pdf`, { params: { pageSize, watermark, pageBreaks }, responseType: 'blob' })
   },
 
   exportDocx(scriptId, pageSize = 'a4') {
@@ -53,8 +53,8 @@ export const scriptApi = {
     return api.get(`/public/scripts/${scriptId}`)
   },
 
-  exportPublicPdf(scriptId, pageSize = 'a4', watermark = '') {
-    return api.get(`/public/scripts/${scriptId}/export/pdf`, { params: { pageSize, watermark }, responseType: 'blob' })
+  exportPublicPdf(scriptId, pageSize = 'a4', watermark = '', pageBreaks = '') {
+    return api.get(`/public/scripts/${scriptId}/export/pdf`, { params: { pageSize, watermark, pageBreaks }, responseType: 'blob' })
   },
 
   exportPublicDocx(scriptId, pageSize = 'a4') {

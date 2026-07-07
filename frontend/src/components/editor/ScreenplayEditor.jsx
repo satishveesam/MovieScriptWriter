@@ -40,6 +40,7 @@ export default function ScreenplayEditor({
   watermarkEnabled = false,
   watermarkText = 'CONFIDENTIAL',
   watermarkOpacity = 0.1,
+  onPageBreaksChange,
 }) {
   const [localFocusedIndex, localSetFocusedIndex] = useState(0)
   const focusedIndex = propFocusedIndex !== undefined ? propFocusedIndex : localFocusedIndex
@@ -52,6 +53,12 @@ export default function ScreenplayEditor({
 
   const [pageBreaks, setPageBreaks] = useState([])
   const [pageHeights, setPageHeights] = useState({})
+
+  useEffect(() => {
+    if (onPageBreaksChange) {
+      onPageBreaksChange(pageBreaks)
+    }
+  }, [pageBreaks, onPageBreaksChange])
   const [deleteConfirm, setDeleteConfirm] = useState(null) // { pageNum, startIdx, endIdx }
   const [selectedBlockIndices, setSelectedBlockIndices] = useState([])
   const selectedBlockIndicesRef = useRef([])

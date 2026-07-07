@@ -24,6 +24,8 @@ public interface ScriptService {
 
     byte[] exportPdf(Long userId, Long scriptId, String pageSize, String watermark);
 
+    byte[] exportPdf(Long userId, Long scriptId, String pageSize, String watermark, String pageBreaks);
+
     byte[] exportDocx(Long userId, Long scriptId, String pageSize);
 
     AiResponse aiAssist(Long userId, Long scriptId, AiScriptRequest request);

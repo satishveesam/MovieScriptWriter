@@ -15,6 +15,7 @@ export default function PublicScriptPage() {
   const [blocks, setBlocks] = useState([])
   const [zoom, setZoom] = useState(100)
   const [pageSize, setPageSize] = useState('a4')
+  const [pageBreaks, setPageBreaks] = useState([])
 
   useEffect(() => {
     async function loadScript() {
@@ -35,7 +36,7 @@ export default function PublicScriptPage() {
   const handleExportPdf = async () => {
     if (!script?.id) return
     try {
-      const response = await scriptApi.exportPublicPdf(script.id, pageSize)
+      const response = await scriptApi.exportPublicPdf(script.id, pageSize, '', pageBreaks.join(','))
       const data = response.data
 
       if (data instanceof Blob && data.type === 'application/json') {
@@ -173,6 +174,7 @@ export default function PublicScriptPage() {
           readOnly={true}
           onChange={() => {}}
           fontFamily={script?.fontFamily || 'Courier Prime'}
+          onPageBreaksChange={setPageBreaks}
         />
       </div>
     </div>

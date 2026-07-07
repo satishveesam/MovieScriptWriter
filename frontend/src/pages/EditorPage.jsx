@@ -65,6 +65,7 @@ export default function EditorPage() {
   const [focusedIndex, setFocusedIndex] = useState(0)
   const [zoom, setZoom] = useState(100)
   const [pageSize, setPageSize] = useState('a4')
+  const [pageBreaks, setPageBreaks] = useState([])
   const [fontFamily, setFontFamily] = useState('Courier Prime')
   const [showAi, setShowAi] = useState(false)
   const [showFind, setShowFind] = useState(false)
@@ -176,7 +177,7 @@ export default function EditorPage() {
     try {
       const response = format === 'docx'
         ? await scriptApi.exportDocx(script.id, pageSize)
-        : await scriptApi.exportPdf(script.id, pageSize, watermarkEnabled ? watermarkText : '')
+        : await scriptApi.exportPdf(script.id, pageSize, watermarkEnabled ? watermarkText : '', pageBreaks.join(','))
       const data = response.data
 
       // Check if the response is actually a JSON error
@@ -447,6 +448,7 @@ export default function EditorPage() {
             watermarkEnabled={watermarkEnabled}
             watermarkText={watermarkText}
             watermarkOpacity={watermarkOpacity}
+            onPageBreaksChange={setPageBreaks}
           />
         </div>
 

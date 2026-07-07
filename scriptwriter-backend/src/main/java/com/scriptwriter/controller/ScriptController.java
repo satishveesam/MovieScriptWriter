@@ -99,9 +99,10 @@ public class ScriptController {
             @AuthenticationPrincipal UserPrincipal principal,
             @PathVariable Long id,
             @RequestParam(required = false, defaultValue = "a4") String pageSize,
-            @RequestParam(required = false) String watermark
+            @RequestParam(required = false) String watermark,
+            @RequestParam(required = false) String pageBreaks
     ) {
-        byte[] pdf = scriptService.exportPdf(principal.getUser().getId(), id, pageSize, watermark);
+        byte[] pdf = scriptService.exportPdf(principal.getUser().getId(), id, pageSize, watermark, pageBreaks);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=screenplay.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
@@ -163,9 +164,10 @@ public class ScriptController {
     public ResponseEntity<byte[]> exportPublicPdf(
             @PathVariable Long id,
             @RequestParam(required = false, defaultValue = "a4") String pageSize,
-            @RequestParam(required = false) String watermark
+            @RequestParam(required = false) String watermark,
+            @RequestParam(required = false) String pageBreaks
     ) {
-        byte[] pdf = scriptService.exportPdf(null, id, pageSize, watermark);
+        byte[] pdf = scriptService.exportPdf(null, id, pageSize, watermark, pageBreaks);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=screenplay.pdf")
                 .contentType(MediaType.APPLICATION_PDF)
