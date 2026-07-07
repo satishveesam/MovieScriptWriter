@@ -1,87 +1,139 @@
 # 🎬 Movie Script Writer
 
-A premium, interactive web-based screenplay editor that automatically formats scripts to standard industry specifications. Built with React and Spring Boot, it features page-by-page editor styling (supporting both A4 and US Letter formats), real-time database persistence, custom watermarking, version history, and pixel-perfect PDF export synchronized exactly with the editor layout.
+<p align="center">
+  <img src="https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-6-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Spring_Boot-3-6DB33F?style=for-the-badge&logo=springboot&logoColor=white" alt="Spring Boot" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Neon-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Docker-Enabled-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Netlify-Deployed-00C7B7?style=for-the-badge&logo=netlify&logoColor=white" alt="Netlify" />
+  <img src="https://img.shields.io/badge/Render-Deployed-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Render" />
+</p>
+
+A state-of-the-art, interactive web application tailored for screenwriters and creative teams. Movie Script Writer provides a browser-based, WYSIWYG editor that strictly adheres to professional screenplay format regulations (A4 and US Letter page sizes). Behind a beautiful visual interface lies a robust engine that handles auto-pagination, real-time cloud sync, history checkpoints, collaborative sharing, and synchronized high-fidelity PDF exports.
 
 ---
 
-## ✨ Features
+## 📸 Interface Preview (Desktop Mode)
 
-- **Standard Screenplay Formatting**: Auto-format elements such as *Scene Heading, Action, Character, Dialogue, Parenthetical, Transition*, and *Shot* using hotkeys or toolbar selectors.
-- **Title Page Setup**: Easily create a dedicated Title Page (Page 1) with vertically centered Title, Writer, Director, and Screenplay fields.
-- **Page Layout & Auto-Zoom**: Supports **A4** and **US Letter** standards with real-time pagination, margins, and auto-zoom to fit mobile screens.
-- **Custom Watermarks**: Apply custom, rotated watermarks centered on every page (automatically skipping Page 1 / Title Page) with configurable opacity.
-- **PDF & DOCX Export**: One-click download options. The PDF export matches the browser's pagination exactly, preventing layout drift.
-- **Version Control**: Built-in script history to capture manual and automatic snapshots so you can switch back to any version.
-- **Collaboration & Public Sharing**: Generate public links to share read-only views of your screenplay.
+### 💻 Main Screenplay Editor & Workspace
+![Desktop Screenplay Editor](screenshots/desktop_editor.png)
+
+### 📄 Vertically Centered Title Page Setup
+![Title Page Layout](screenshots/title_page.png)
 
 ---
 
-## 📸 Screenshots
+## 🌟 Key Product Features
 
-### 💻 Desktop Screenplay Editor
-![Desktop Editor Screen](screenshots/desktop_editor.png)
+### 1. Smart Screenplay Text Engine
+- **Element Formatting Presets**: Create headings, action descriptions, characters, dialogues, parentheticals, transitions, and shots with ease.
+- **Smart Hotkey Navigation**: Cycle through element types automatically using standard industry shortcuts (`Tab` / `Enter` flow).
+- **Auto-Capitalization**: Automatically capitalizes character names and scene headings as you type.
 
-### 📄 Professional Title Page
-![Title Page Setup](screenshots/title_page.png)
+### 2. Live Page View Layout (A4 & US Letter)
+- **Pixel-Perfect Scaling**: Real-time translation of text inputs into A4 (`210mm` x `297mm`) or US Letter (`8.5"` x `11"`) formats.
+- **Automated Pagination**: The frontend calculates text height dynamically, wrapping blocks onto a new visual page sheet once margins are reached.
+- **Final Page Spacer**: Extends short last pages to full sheet heights, ensuring all pages remain identical in size.
 
-### 📱 Responsive Mobile Layout
-![Mobile Responsive View](screenshots/mobile_editor.png)
+### 3. High-Fidelity Custom Watermarking
+- **Visual & Print Protection**: Custom diagonal watermarks with variable text and opacity overlay the editor pages.
+- **Title Page Detection**: Watermarks automatically skip Page 1 if a Title Page is configured.
+
+### 4. Direct Synchronization PDF/DOCX Export
+- **Exact Layout Exporting**: PDF page breaks are calculated dynamically on the frontend and sent as parameters to the backend to guarantee identical document layout matching.
+- **Custom Fonts**: Supported fonts include Courier New, Courier Prime, Cinzel, Special Elite, Space Mono, IM Fell English, Ultra, and Bungee.
+
+### 5. Snapshot Version History
+- **Automatic Checkpoints**: Periodically stores snapshots of the screenplay as you write.
+- **Restore & Switch**: View and revert to any historical version of your script via a visual sidebar.
+
+### 6. Public Sharing & Link Generation
+- **Public View Mode**: Generate a shareable, secure link for read-only viewing and PDF downloads for producers or actors.
 
 ---
 
-## 🛠️ Tech Stack
+## ⌨️ Smart Formatting Shortcuts
 
-### Frontend
-- **Framework**: React 18, Vite 6
-- **Styling**: Tailwind CSS v4, Custom CSS variables
-- **Icons**: React Icons (Fi, Md, Fa)
-- **API Client**: Axios
+Maximize writing speed using industry-standard keyboard controls:
 
-### Backend
-- **Core**: Java 21, Spring Boot 3
-- **Security**: Spring Security + JWT Authentication
-- **Database**: Neon PostgreSQL
-- **PDF Library**: OpenPDF (fork of iText)
-- **Containerization**: Docker (multi-stage build)
+| Element Type | Key Trigger (At line start) | formatting Context | Tab / Enter Cycle |
+|---|---|---|---|
+| **Scene Heading** | `INT.` or `EXT.` | Starts a scene location | Pressing `Enter` jumps to **Action** |
+| **Character** | Type name (caps) | Specifies speaker name | Pressing `Enter` jumps to **Dialogue** |
+| **Dialogue** | `Enter` after Character | Words spoken by character | Pressing `Enter` jumps to **Action** (or `Tab` for **Parenthetical**) |
+| **Parenthetical** | `Tab` inside Dialogue | Action/tone during dialogue | Pressing `Enter` jumps to **Dialogue** |
+| **Transition** | `F8` or Toolbar | Scene transition indicator | Pressing `Enter` jumps to **Scene Heading** |
+| **Action** | Default state | Scene action descriptor | Pressing `Tab` jumps to **Character** |
 
 ---
 
-## 🚀 Setup & Local Running
+## 🏗️ System Architecture
 
-### Prerequisites
-- Node.js (v18+)
-- JDK 21
-- PostgreSQL database (local or cloud Neon instance)
+The application is structured into decoupled frontend and backend layers:
 
-### 1. Database Configuration
-Create a PostgreSQL database and configure the connection in `scriptwriter-backend/src/main/resources/application.properties`:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/neondb
-spring.datasource.username=your_username
-spring.datasource.password=your_password
+```mermaid
+graph TD
+    A[React Single Page App - Netlify] -->|HTTPS REST Requests| B[Spring Boot Gateway - Render]
+    B -->|Entity Persistence| C[(Neon PostgreSQL Database)]
+    B -->|High-Fidelity Rendering| D[OpenPDF Document Engine]
+    A -->|Calculates Page Heights| E[Live Browser DOM]
+    E -->|Page Break Indices| B
 ```
 
-### 2. Run Backend Server
-Navigate to the backend directory and launch with Maven wrapper:
-```bash
-cd scriptwriter-backend
-./mvnw.cmd spring-boot:run
-```
-The server will run on `http://localhost:8080`.
-
-### 3. Run Frontend App
-Navigate to the frontend directory, install dependencies, and start the Vite development server:
-```bash
-cd frontend
-npm install
-npm run dev
-```
-Open `http://localhost:5173` in your browser.
+- **Frontend**: A highly responsive Single Page Application (SPA) built using React, Vite, and Tailwind CSS.
+- **Backend**: A robust REST API backed by Spring Boot, Spring Security (JWT-based session authentication), and Lombok.
+- **PDF Generation**: Handled via OpenPDF, dynamically applying style guidelines and pagination settings.
 
 ---
 
-## 🌐 Production Deployment
+## ⚙️ Environment Variables
 
-- **Database**: Hosted on [Neon PostgreSQL](https://neon.tech/)
-- **Backend**: Deployed on [Render](https://render.com/) via a Docker build pipeline (configured in [Dockerfile](scriptwriter-backend/Dockerfile))
-- **Frontend**: Built and deployed to [Netlify](https://www.netlify.com/) (configured in [netlify.toml](netlify.toml))
+### Frontend (`frontend/.env.production`)
+```env
+VITE_API_BASE_URL=https://scriptwriter-backend.onrender.com
+```
+
+### Backend (Render Environment)
+```env
+SPRING_DATASOURCE_URL=postgresql://neondb_owner:...@ep-still-bonus...
+SPRING_DATASOURCE_USERNAME=neondb_owner
+SPRING_DATASOURCE_PASSWORD=xxxxxxxxxxxx
+ALLOWED_ORIGINS=https://fancy-tapioca-624a02.netlify.app
+JWT_SECRET=your-super-secure-production-jwt-signing-secret-key
+```
+
+---
+
+## 🚀 Installation & Local Development
+
+### 1. Backend Setup
+1. Ensure **JDK 21** and **Maven** are installed.
+2. Configure local environment variables or update `scriptwriter-backend/src/main/resources/application.properties`.
+3. Build and launch:
+   ```bash
+   cd scriptwriter-backend
+   ./mvnw.cmd spring-boot:run
+   ```
+
+### 2. Frontend Setup
+1. Navigate to the frontend workspace.
+2. Install npm packages:
+   ```bash
+   cd frontend
+   npm install
+   ```
+3. Run in development mode:
+   ```bash
+   npm run dev
+   ```
+4. Build optimized bundle:
+   ```bash
+   npm run build
+   ```
+
+---
+
+## 🛡️ License
+
+This project is proprietary. All rights reserved.
